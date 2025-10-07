@@ -1,4 +1,4 @@
-# Last updated: 2025/10/7 16:57:59
+# Last updated: 2025/10/7 16:58:07
 class Solution(object):
     def permute(self, nums):
         """
@@ -9,6 +9,7 @@ class Solution(object):
         used  = [False] * len(nums)
         def backtrack(path):
             if len(path) == len(nums):
+                # copy
                 res.append(path[:])
                 return
             for i in range(len(nums)):
