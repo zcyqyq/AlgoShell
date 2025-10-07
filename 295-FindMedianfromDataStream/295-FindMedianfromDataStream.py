@@ -1,21 +1,25 @@
-# Last updated: 2025/10/7 16:27:01
+# Last updated: 2025/10/7 16:57:59
 class Solution(object):
-    def trap(self, height):
+    def permute(self, nums):
         """
-        :type height: List[int]
-        :rtype: int
+        :type nums: List[int]
+        :rtype: List[List[int]]
         """
-        n = len(height)
-        max_left = [0] * n
-        max_right = [0] * n
-        max_right[n - 1] = height[n - 1]
-        rain = 0
-        for i in range(n):
-            max_left[i] = max(height[i], max_left[i - 1])
-        for i in range(n - 2, -1, -1):
-            max_right[i] = max(height[i], max_right[i + 1])
-        for i in range(n):
-            h = min(max_left[i], max_right[i])
-            rain += (h - height[i])
-        return rain
-
+        res = []
+        used  = [False] * len(nums)
+        def backtrack(path):
+            if len(path) == len(nums):
+                res.append(path[:])
+                return
+            for i in range(len(nums)):
+                if used[i]:
+                    continue
+                path = path + [nums[i]]
+                used[i] = True
+                backtrack(path)
+                path.pop()
+                used[i] = False
+        backtrack([])
+        return res
+            
+        
