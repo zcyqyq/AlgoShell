@@ -1,38 +1,34 @@
-# Last updated: 2025/10/6 17:35:36
+# Last updated: 2025/10/6 17:42:37
 class Solution(object):
-    def updateMatrix(self, mat):
+    def canPartition(self, nums):
         """
-        :type mat: List[List[int]]
-        :rtype: List[List[int]]
+        :type nums: List[int]
+        :rtype: bool
         """
-        # Like rotten oranges problem
-        # First, classify two sets of verts by 0/1
-        # Second, no need to actually build graph,
-        # instead, using directions = [[-1, 0], [1, 0], [0, 1], [0, -1]]
-        # Finally, calculate distance using BFS
-        set_0 = deque()
-        m = len(mat)
-        n = len(mat[0])
-        res = [[-1 for _ in range(n)] for _ in range(m)]
-        for i in range(m):
-            for j in range(n):
-                if mat[i][j] == 0:
-                    set_0.append((i, j, 0))
-                    res[i][j] = 0
-        directions = [[-1, 0], [1, 0], [0, 1], [0, -1]]
-        while set_0:
-            u, v, dis = set_0.popleft()
-            for dire in directions:
-                nu = u + dire[0]
-                nv = v + dire[1]
-                if nu >= 0 and nu < m and nv >= 0 and nv < n:
-                    if mat[nu][nv] == 1:
-                        mat[nu][nv] = 0
-                        if res[nu][nv] == -1:
-                            res[nu][nv] = dis + 1
-                        else:
-                            res[nu][nv] = min(dis + 1, mat[nu][nv])
-                        set_0.append((nu, nv, dis + 1))
-        return res
+        # First, sort this array in ascending order
+        # If we can partite one set to two subsets with equal sum, 
+        # what we need to do is to find a subset
+        # which can satisfy its sum equals to sum(set) / 2.
+        # In this way, change the problem to find some numbers 
+        # able to beadded to target sum
+        # Use dp: dp[i][v] = dp[i-1][v - value(i)] if nums[i+1] is picked
+        #         dp[i][v] = dp[i-1][v] if nums[i+1] is not picked
+
+        is_picked = [0] * len(nums)
+        sum_set = sum(nums)
+        if sum_set % 2 != 0:
+            return False
+        else:
+            target = sum_set / 2
+            dp = [[False for _ in range(target + 1)] for _ in range(len(nums) + 1)]
+        for i in range(len(nums) + 1):
+            dp[i][0] = True
+        for i in range(1, len(nums) + 1):
+            for v in range(target + 1):
+                if v >= nums[i - 1]:
+                    dp[i][v] = dp[i - 1][v - nums[i - 1]] or dp[i - 1][v]
+                else:
+                    dp[i][v] = dp[i - 1][v]
+        return dp[-1][target]
 
         
