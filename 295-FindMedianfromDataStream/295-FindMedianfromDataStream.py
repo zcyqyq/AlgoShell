@@ -1,14 +1,30 @@
-# Last updated: 2025/10/7 17:10:59
+# Last updated: 2025/10/7 17:27:28
 class Solution(object):
-    def maxSubArray(self, nums):
+    def spiralOrder(self, matrix):
         """
-        :type nums: List[int]
-        :rtype: int
+        :type matrix: List[List[int]]
+        :rtype: List[int]
         """
-        ret = 0
-        dp = [0] * len(nums)
-        dp[0] = nums[0]
-        for i in range(1, len(nums)):
-            dp[i] = max(nums[i], nums[i] + dp[i - 1])
-        return max(dp)
+        # right, down, left, up
+        directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+        res = []
+        i = 0
+        j = 0
+        dir_i = 0
+        step = 0
+        m = len(matrix)
+        n = len(matrix[0])
+        bool_m = [[0 for _ in range(n)] for _ in range(m)]
+        while step < m * n:
+            res.append(matrix[i][j])
+            bool_m[i][j] = -1
+            ni = i + directions[dir_i % 4][0]
+            nj = j + directions[dir_i % 4][1]
+            if ni < 0 or nj < 0 or ni >= m or nj >= n or bool_m[ni][nj] == -1:
+                dir_i += 1
+            i += directions[dir_i % 4][0]
+            j += directions[dir_i % 4][1]
+            step += 1
+        return res
+                
         
