@@ -1,26 +1,18 @@
-# Last updated: 2025/10/7 17:46:01
+# Last updated: 2025/10/7 18:48:23
 class Solution(object):
-    def merge(self, intervals):
+    def coinChange(self, coins, amount):
         """
-        :type intervals: List[List[int]]
-        :rtype: List[List[int]]
+        :type coins: List[int]
+        :type amount: int
+        :rtype: int
         """
-        left = -1
-        right = -1
-        res = []
-        intervals = sorted(intervals)
-        for interval in intervals:
-            if right < interval[0]:
-                # if not initial value
-                if left != -1:
-                    res.append([left, right])
-                left = interval[0]
-                right = interval[1]
-                continue
-            if interval[0] >= left and interval[0] <= right:
-                if interval[1] > right:
-                    right = interval[1]
-                    continue
-        res.append([left, right])
-        return res
+        dp = [2**31 - 1] * (amount + 1)
+        dp[0] = 0
+        for coin in coins:
+            for i in range(coin, amount + 1):
+                dp[i] = min(dp[i - coin] + 1, dp[i])
+        if dp[-1] == 2**31 - 1:
+            return -1
+        else:
+            return dp[-1]
         
