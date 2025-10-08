@@ -1,30 +1,26 @@
-# Last updated: 2025/10/7 17:27:28
+# Last updated: 2025/10/7 17:46:01
 class Solution(object):
-    def spiralOrder(self, matrix):
+    def merge(self, intervals):
         """
-        :type matrix: List[List[int]]
-        :rtype: List[int]
+        :type intervals: List[List[int]]
+        :rtype: List[List[int]]
         """
-        # right, down, left, up
-        directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+        left = -1
+        right = -1
         res = []
-        i = 0
-        j = 0
-        dir_i = 0
-        step = 0
-        m = len(matrix)
-        n = len(matrix[0])
-        bool_m = [[0 for _ in range(n)] for _ in range(m)]
-        while step < m * n:
-            res.append(matrix[i][j])
-            bool_m[i][j] = -1
-            ni = i + directions[dir_i % 4][0]
-            nj = j + directions[dir_i % 4][1]
-            if ni < 0 or nj < 0 or ni >= m or nj >= n or bool_m[ni][nj] == -1:
-                dir_i += 1
-            i += directions[dir_i % 4][0]
-            j += directions[dir_i % 4][1]
-            step += 1
+        intervals = sorted(intervals)
+        for interval in intervals:
+            if right < interval[0]:
+                # if not initial value
+                if left != -1:
+                    res.append([left, right])
+                left = interval[0]
+                right = interval[1]
+                continue
+            if interval[0] >= left and interval[0] <= right:
+                if interval[1] > right:
+                    right = interval[1]
+                    continue
+        res.append([left, right])
         return res
-                
         
