@@ -1,26 +1,14 @@
-# Last updated: 2025/10/7 16:58:07
+# Last updated: 2025/10/7 17:10:59
 class Solution(object):
-    def permute(self, nums):
+    def maxSubArray(self, nums):
         """
         :type nums: List[int]
-        :rtype: List[List[int]]
+        :rtype: int
         """
-        res = []
-        used  = [False] * len(nums)
-        def backtrack(path):
-            if len(path) == len(nums):
-                # copy
-                res.append(path[:])
-                return
-            for i in range(len(nums)):
-                if used[i]:
-                    continue
-                path = path + [nums[i]]
-                used[i] = True
-                backtrack(path)
-                path.pop()
-                used[i] = False
-        backtrack([])
-        return res
-            
+        ret = 0
+        dp = [0] * len(nums)
+        dp[0] = nums[0]
+        for i in range(1, len(nums)):
+            dp[i] = max(nums[i], nums[i] + dp[i - 1])
+        return max(dp)
         
