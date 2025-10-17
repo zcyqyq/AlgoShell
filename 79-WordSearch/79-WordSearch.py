@@ -1,4 +1,4 @@
-# Last updated: 2025/10/16 18:10:25
+# Last updated: 2025/10/16 18:11:09
 class Solution(object):
     def exist(self, board, word):
         """
@@ -32,6 +32,9 @@ class Solution(object):
             return False
                     
         while queue:
+            # here using set instead of list
+            # because search in list is O(N)
+            # but search in set is O(1)
             states = set()
             i, j = queue.popleft()
             states.add((i, j))
