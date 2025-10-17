@@ -1,4 +1,4 @@
-# Last updated: 2025/10/16 18:07:21
+# Last updated: 2025/10/16 18:10:25
 class Solution(object):
     def exist(self, board, word):
         """
@@ -24,17 +24,17 @@ class Solution(object):
                 nj = j + dire[1]
                 if ni < m and ni >= 0 and nj < n and nj >= 0 and (ni, nj) not in states:
                     if board[ni][nj] == word[depth]:
-                        states.append((ni, nj))
+                        states.add((ni, nj))
                         if dfs((ni, nj), depth + 1):
                             return True
                         else:
-                            states.pop()
+                            states.remove((ni, nj))
             return False
                     
         while queue:
-            states = []
+            states = set()
             i, j = queue.popleft()
-            states.append((i, j))
+            states.add((i, j))
             if dfs((i, j), 1):
                 return True
         return False
